@@ -1,0 +1,14 @@
+*~
+*.sqlite
+*.pyc
+static/*
+elcid/opal.sqlite*
+elcid/local_settings.py
+.coverage
+htmlcov
+libpeerconnection.log
+elcid/static
+opal.sqlite.*
+*.DS_Store
+.coveragerc
+*#
