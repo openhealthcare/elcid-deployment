@@ -7,7 +7,6 @@ import ConfigParser
 from fabric.api import env
 
 from deployment import get_release_name
-from variables import PROJECTS
 
 def setup_env():
     config = ConfigParser.RawConfigParser()
