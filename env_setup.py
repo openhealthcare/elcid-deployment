@@ -16,7 +16,7 @@ def setup_env():
     env.release_name = get_release_name()
     github_user = config.get('project', 'github_user')
     env.github_url = "https://github.com/{0}/{1}.git".format(
-        env.project_name, github_user
+        github_user, env.project_name,
     )
     env.database_owner = config.get('db', 'os_user')
     env.home_dir = os.path.abspath(config.get('system', 'base_dir'))

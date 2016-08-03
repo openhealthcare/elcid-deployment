@@ -5,9 +5,7 @@
 name=elcid
 # Target branch we want to deploy
 branch=v0.6.2
-# Un-comment this if you are deploying from a repo under a different Github user
-# (defaults to openhealthcare)
-# github_user=openhealthcare
+github_user=openhealthcare
 
 [db]
 # The user we use when running OS commands
