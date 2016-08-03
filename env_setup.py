@@ -1,29 +1,29 @@
+"""
+Setup environment by reading configuration variables
+"""
 import os
+import ConfigParser
+
 from fabric.api import env
+
 from deployment import get_release_name
 from variables import PROJECTS
 
-
-def setup_env(project_name, branch_name):
-    # Name of the project in the variables.PROJECTS dict
-    # Also the name used for the directory to which we deploy
-    env.project_name = project_name
-    # The target release branch
-    env.branch_name = branch_name
-    # generated project+branch
+def setup_env():
+    config = ConfigParser.RawConfigParser()
+    config.read(os.environ.get('ELCID_ENV', 'settings.ini'))
+    env.project_name = config.get('project', 'name')
+    env.branch_name = config.get('project', 'branch')
     env.release_name = get_release_name()
-    # Github URL from variables.PROJECTS
-    env.github_url = PROJECTS[env.project_name]
-    # OS user we should run database commands as
-    env.database_owner = "postgres"
-    # Directory to which we should deploy applications 
-    # Typically /usr/lib/ohc
-    env.home_dir = os.path.abspath("../deployment_test")
+    github_user = config.get('project', 'github_user')
+    env.github_url = "https://github.com/{0}/{1}.git".format(
+        env.project_name, github_user
+    )
+    env.database_owner = config.get('db', 'os_user')
+    env.home_dir = os.path.abspath(config.get('system', 'base_dir'))
     env.project_path = os.path.join(env.home_dir, env.release_name)
-    # Database user we would like to use. Created if new
-    env.app_owner = "ohc"
-    # Password for the database user above
-    env.app_password = "this is fake"
+    env.app_owner = config.get('db', 'db_username')
+    env.app_password = config.get('db', 'db_password')
     env.db_name = env.release_name.replace("-", "").replace(".", "")
     env.app_name = env.project_name
 
