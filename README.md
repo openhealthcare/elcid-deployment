@@ -1,4 +1,13 @@
-Server Setup
+## Installation
+
+```bash
+git clone git@github.com:openhealthcare/elcid-deployment.git
+cd elcid-deployment
+mkvirtualenv elcid-setup -a $PWD
+pip install -r requirements.txt
+```
+
+## Server Setup
 
 1. run ./initial_bootstrap.sh
 2. workon elcid-setup
@@ -7,7 +16,7 @@ Server Setup
 
 You should be up and running!
 
-Deployment
+## Deployment
 
 1. workon elcid-setup
 2. double check all the env variables in env_setup are what you think they are
