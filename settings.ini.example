@@ -1,0 +1,20 @@
+[project]
+# Name of the project we are deploying/installing.
+# This should typically be the name of the github repo
+# It will also be used as a directory name for our deployment/installation target
+name=elcid
+# Target branch we want to deploy
+branch=v0.6.2
+github_user=openhealthcare
+
+[db]
+# The user we use when running OS commands
+os_user=postgres
+# Database user we would like to use. Will be created if it does not exist.
+db_username=ohc
+# Password for the database user above
+db_password='this is fake'
+
+[system]
+# Directory to which we should deploy applications
+base_dir=/usr/lib/ohc
