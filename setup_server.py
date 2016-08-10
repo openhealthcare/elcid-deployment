@@ -1,3 +1,4 @@
+import os
 from fabric.api import local, env, settings
 from common import lexists, restart_database
 
@@ -100,12 +101,12 @@ def make_home_directory():
 
 
 def create_log_directory():
-    log_dir = "/usr/local/ohc/log/supervisord"
+    log_dir = os.path.join(env.home_dir, 'log/supervisord')
     create_directory(log_dir)
 
 
 def create_run_directory():
-    run_dir = "/usr/local/ohc/var/run/"
+    run_dir = os.path.join(env.home_dir, 'var/run')
     create_directory(run_dir)
 
 
