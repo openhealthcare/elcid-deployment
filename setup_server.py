@@ -23,6 +23,7 @@ DEPLOYMENT_PACKAGES = [
 
     # Python Dev
     "python-dev",
+    "libffi-dev",
     "python-setuptools",
     "python-virtualenv",
     # Just nice"
