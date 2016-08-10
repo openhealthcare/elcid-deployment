@@ -76,7 +76,7 @@ def install_nginx():
 
 
 def restart_nginx():
-    local('/etc/init.d/nginx restart')
+    local('sudo /etc/init.d/nginx restart')
 
 
 def install_postgres():
