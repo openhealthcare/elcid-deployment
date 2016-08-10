@@ -23,7 +23,7 @@ class Pip(object):
     def create_virtual_env(cls):
         cls.install_virtualenvwrapper_if_necessary()
         if not lexists(env.virtual_env_path):
-            local("virtualenv {0}".format(env.virtual_env_path))
+            local("/usr/bin/virtualenv {0}".format(env.virtual_env_path))
 
     @classmethod
     def set_project_directory(cls):
