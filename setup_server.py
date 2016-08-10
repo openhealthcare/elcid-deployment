@@ -70,7 +70,7 @@ def install_nginx():
     Apt.install('nginx')
     assert lexists('/etc/nginx/sites-enabled')
     if lexists('/etc/nginx/sites-enabled/default'):
-        local("rm /etc/nginx/sites-enabled/default")
+        local("sudo rm /etc/nginx/sites-enabled/default")
 
 
 def restart_nginx():
