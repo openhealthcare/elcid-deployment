@@ -5,7 +5,7 @@
 #
 
 #
-# Make Bash play nice
+# Make Bash play nice with our requirement for setting proxies from variablescase
 #
 alias sudo='sudo '
 
@@ -19,7 +19,7 @@ sudo apt-get install git \
      libssl-dev \
      python-dev \
      postgresql \
-     libq-dev -y
+     libpq-dev -y
 
 #
 # Pick up on environment variables
