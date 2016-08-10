@@ -24,6 +24,7 @@ def get(section, option, default=None):
 
 def setup_env():
     env.project_name = get('project', 'name')
+    env.settings_module_name = get('project', 'settings_module_name')
     env.branch_name = get('project', 'branch')
     env.release_name = get_release_name()
     github_user = get('project', 'github_user')
