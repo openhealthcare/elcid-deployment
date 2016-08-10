@@ -93,7 +93,9 @@ def create_directory(dir_name):
 
 
 def make_home_directory():
-    create_directory(env.home_dir)
+    if not lexists(dir_env.home_dir):
+        local("sudo mkdir -p {}".format(env.home_dir))
+        local("sudo chown ohc:ohc {0}".format(env.home_dir))
 
 
 def create_log_directory():
