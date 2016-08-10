@@ -35,11 +35,19 @@ class Pip(object):
     def install(cls, *pkgs):
         pip = cls.get_pip()
         for pkg in pkgs:
-            local('{0} install -U {1}'.format(pip, pkg))
+            if env.http_proxy:
+                local('{0} install -U {1}'.format(pip, pkg))
+            else:
+                local('{0} install --proxy {2} -U {1}'.format(pip, pkg, env.http_proxy))
 
     @classmethod
     def install_requirements(cls):
-        local("{0} install -r requirements.txt".format(cls.get_pip()))
+        if env.http_proxy:
+            local("{0} install -r requirements.txt --proxy {1}".format(
+                cls.get_pip()), env.http_proxy
+            )
+        else:
+            local("{0} install -r requirements.txt".format(cls.get_pip()))
 
 
 def restart_database():

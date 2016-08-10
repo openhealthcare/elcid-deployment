@@ -25,6 +25,7 @@ sudo apt-get install git \
 # Pick up on environment variables
 #
 if [ -z "$HTTP_PROXY" ]; then
+    echo "Found an HTTP Proxy environment variable - settng pip and git up to use it.sour"
     alias pip="pip --proxy $HTTP_PROXY"
     git config --global http.proxy $HTTP_PROXY
 fi

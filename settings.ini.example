@@ -18,3 +18,6 @@ db_password='this is fake'
 [system]
 # Directory to which we should deploy applications
 base_dir=/usr/lib/ohc
+
+# Uncomment this if your deployment environment requires you to use a HTTP proxy
+#http_proxy=http://where_is_your_proxy

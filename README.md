@@ -13,7 +13,8 @@ cp settings.ini.example settings.in
 1. run ./initial_bootstrap.sh
 2. workon elcid-setup
 3. Edit the variables in `settings.ini as required.
-4. fab server_setup
+4. install the requirements file
+5. fab server_setup
 
 You should be up and running!
 
