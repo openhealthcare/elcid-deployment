@@ -82,8 +82,9 @@ def install_postgres():
         ".".join(str(i) for i in env.pg_version)
     )
     if lexists(hba_conf):
-        local("rm {}".format(hba_conf))
+        local("sudo rm {}".format(hba_conf))
     local("sudo cp database/pg_hba.conf {0}".format(hba_conf))
+    local("sudo chown postgres:postgres {0}".format(hba_conf))
     restart_database()
 
 
