@@ -45,7 +45,7 @@ class Pip(object):
         if env.http_proxy:
             local("{0} install -r requirements.txt --proxy {1}".format(
                 cls.get_pip(), env.http_proxy
-            )
+            ))
         else:
             local("{0} install -r requirements.txt".format(cls.get_pip()))
 
