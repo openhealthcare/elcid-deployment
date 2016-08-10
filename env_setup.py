@@ -14,7 +14,7 @@ config.read(os.environ.get('ELCID_ENV', 'settings.ini'))
 
 def get(section, option, default=None):
     try:
-        return env.http_proxy = config.get(section, option)
+        return config.get(section, option)
     except ConfigParser.NoOptionError:
         print 'No option for', section, option
         return default
