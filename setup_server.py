@@ -110,12 +110,21 @@ def create_run_directory():
     run_dir = os.path.join(env.home_dir, 'var/run')
     create_directory(run_dir)
 
+def _restart_app_command():
+    return "{0}/bin/supervisorctl -c {1}/etc/production.conf restart all".format(
+        env.virtual_env_path, env.project_path
+    )
 
-def start_supervisord():
-    local("{0}/bin/supervisord -c {1}/etc/production.conf".format(env.virtual_env_path, env.project_path))
+def restart_app():
+    local(_restart_app_command())
+
+def start_supervisord_or_restart_app():
+    local("pgrep supervisord && {2} || {0}/bin/supervisord -c {1}/etc/production.conf".format(
+        env.virtual_env_path, env.project_path, _restart_app_command()))
 
 
 def restart_gunicorn():
     local("{0}/bin/supervisorctl -c {1}/etc/production.conf restart gunicorn".format(
         env.virtual_env_path, env.project_path
-    ))
+    )
+)

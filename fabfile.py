@@ -20,7 +20,7 @@ def server_setup():
     setup_server.create_run_directory()
     deploy()
     Django.deployment_tasks()
-    setup_server.start_supervisord()
+    setup_server.start_supervisord_or_restart_app()
     setup_server.restart_nginx()
 
 
@@ -36,13 +36,13 @@ def restart_nginx():
 
 def restart_everything():
     setup_env()
-    setup_server.restart_gunicorn()
+    setup_server.restart_app()
     setup_server.restart_nginx()
 
 
 def start_supervisord():
     setup_env()
-    setup_server.start_supervisord()
+    setup_server.start_supervisord_or_restart_app()
 
 
 def symlink_upstart():
