@@ -3,6 +3,8 @@
 # This should typically be the name of the github repo
 # It will also be used as a directory name for our deployment/installation target
 name=elcid
+# Uncomment this if your settings module name is different to your project name
+#settings_module_name=elcid
 # Target branch we want to deploy
 branch=v0.6.2
 github_user=openhealthcare
@@ -18,3 +20,6 @@ db_password='this is fake'
 [system]
 # Directory to which we should deploy applications
 base_dir=/usr/lib/ohc
+
+# Uncomment this if your deployment environment requires you to use a HTTP proxy
+#http_proxy=http://where_is_your_proxy

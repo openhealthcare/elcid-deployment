@@ -18,9 +18,9 @@ def server_setup():
     setup_server.install_postgres()
     setup_server.create_log_directory()
     setup_server.create_run_directory()
-    deploy(project_name, branch_name)
+    deploy()
     Django.deployment_tasks()
-    setup_server.start_supervisord()
+    setup_server.start_supervisord_or_restart_app()
     setup_server.restart_nginx()
 
 
@@ -36,13 +36,13 @@ def restart_nginx():
 
 def restart_everything():
     setup_env()
-    setup_server.restart_gunicorn()
+    setup_server.restart_app()
     setup_server.restart_nginx()
 
 
 def start_supervisord():
     setup_env()
-    setup_server.start_supervisord()
+    setup_server.start_supervisord_or_restart_app()
 
 
 def symlink_upstart():

@@ -44,7 +44,10 @@ class Django(object):
         }
         template = jinja_env.get_template('production_settings.py.jinja2')
         output = template.render(env_values)
-        local_settings_file = '{0}/{1}/local_settings.py'.format(env.project_path, env.app_name)
+        module_name = env.app_name
+        if env.settings_module_name:
+            module_name = env.settings_module_name
+        local_settings_file = '{0}/{1}/local_settings.py'.format(env.project_path, module_name)
 
         if not lexists(local_settings_file):
             with open(local_settings_file, 'w+') as f:
