@@ -111,7 +111,7 @@ def create_run_directory():
     create_directory(run_dir)
 
 def _restart_app_command():
-    return "{0}/bin/supervisorctl -c {1}/etc/production.conf restart all".format(
+    return "{0}/bin/supervisorctl -c {1}/etc/supervisord.conf restart all".format(
         env.virtual_env_path, env.project_path
     )
 
@@ -124,7 +124,7 @@ def start_supervisord_or_restart_app():
 
 
 def restart_gunicorn():
-    local("{0}/bin/supervisorctl -c {1}/etc/production.conf restart gunicorn".format(
+    local("{0}/bin/supervisorctl -c {1}/etc/supervisord.conf restart gunicorn".format(
         env.virtual_env_path, env.project_path
     )
 )
