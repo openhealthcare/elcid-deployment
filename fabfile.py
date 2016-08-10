@@ -18,7 +18,7 @@ def server_setup():
     setup_server.install_postgres()
     setup_server.create_log_directory()
     setup_server.create_run_directory()
-    deploy(project_name, branch_name)
+    deploy()
     Django.deployment_tasks()
     setup_server.start_supervisord()
     setup_server.restart_nginx()
