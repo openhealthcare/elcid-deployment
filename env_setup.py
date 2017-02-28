@@ -46,4 +46,7 @@ def setup_fab_env():
     )
     env.pg_version = (9, 3)
 
-    env.db_dump_dir = get('system', 'db_dump_dir')
+    if db_dump_dir:
+        env.db_dump_dir = os.path.join(env.home_dir, db_dump_dir)
+    else:
+        env.db_dump_dir = None
