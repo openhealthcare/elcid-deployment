@@ -42,6 +42,10 @@ class Postgres(object):
             local('sudo /etc/init.d/postgresql restart || /etc/init.d/postgresql start')
 
     @classmethod
+    def drop_database(cls):
+        cls.database_cmd("DROP DATABASE {0}".format(env.db_name))
+
+    @classmethod
     def create_user_and_database(cls):
         cls.create_user()
         cls.create_database()

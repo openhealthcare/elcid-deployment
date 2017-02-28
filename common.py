@@ -26,6 +26,10 @@ class Pip(object):
             local("/usr/bin/virtualenv {0}".format(env.virtual_env_path))
 
     @classmethod
+    def remove_virtualenv(cls):
+        local("rm -rf /usr/bin/virtualenv/{}".format(env.name))
+
+    @classmethod
     def set_project_directory(cls):
         local("echo '{0}' > {1}/.project".format(
             env.project_path, env.virtual_env_path
@@ -60,3 +64,7 @@ class Git(object):
                 local("git fetch")
                 local("git checkout {0}".format(env.branch_name))
                 local("git pull origin {}".format(env.branch_name))
+
+    def remove_code_dir(cls):
+        with lcd(env.home_dir):
+            local("rm -rf {}".format(env.release_name))

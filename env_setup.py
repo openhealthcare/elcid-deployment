@@ -23,7 +23,7 @@ def get(section, option, default=None):
         return default
 
 
-def setup_fav_env():
+def setup_fab_env():
     env.project_name = get('project', 'name')
     env.settings_module_name = get('project', 'settings_module_name')
     env.branch_name = get('project', 'branch')

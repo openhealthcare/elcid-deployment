@@ -1,17 +1,19 @@
 from django_helper import Django
-from env_setup import setup_fav_env
+from env_setup import setup_fab_env
 import deployment
 import setup_server
+from common import Git, Pip
+from postgres_helper import Postgres
 
 
 def deploy():
-    setup_fav_env()
+    setup_fab_env()
     deployment.create_env()
     Django.create_local_settings()
 
 
 def django_deploy():
-    setup_fav_env()
+    setup_fab_env()
     Django.create_local_settings()
     Django.migrate()
     Django.load_lookup_lists()
@@ -19,7 +21,7 @@ def django_deploy():
 
 
 def server_setup():
-    setup_fav_env()
+    setup_fab_env()
     setup_server.create_users()
     setup_server.install_common()
     setup_server.install_nginx()
@@ -33,22 +35,28 @@ def server_setup():
     setup_server.restart_nginx()
 
 
+def delete_environment():
+    Postgres.drop_database()
+    Pip.remove_virtualenv()
+    Git.remove_code_dir()
+
+
 def restart_nginx():
-    setup_fav_env()
+    setup_fab_env()
     setup_server.restart_nginx()
 
 
 def restart_everything():
-    setup_fav_env()
+    setup_fab_env()
     setup_server.restart_app()
     setup_server.restart_nginx()
 
 
 def start_supervisord():
-    setup_fav_env()
+    setup_fab_env()
     setup_server.start_supervisord_or_restart_app()
 
 
 def symlink_upstart():
-    setup_fav_env()
+    setup_fab_env()
     deployment.symlink_upstart()
