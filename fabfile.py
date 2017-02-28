@@ -1,15 +1,20 @@
 from django_helper import Django
 from env_setup import setup_fab_env
+from fabric.api import env
 import deployment
 import setup_server
 from common import Git, Pip
 from postgres_helper import Postgres
 
 
-def deploy():
+def deploy_test():
     setup_fab_env()
     deployment.create_env()
     Django.create_local_settings()
+    if not env.db_dump_dir:
+        print "no dump directory provided, not loading in any existing data"
+    else:
+        Postgres.load_data()
 
 
 def django_deploy():
