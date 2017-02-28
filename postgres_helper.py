@@ -71,9 +71,9 @@ class Postgres(object):
         dumps = local("ls {}".format(env.db_dump_dir), capture=True)
         dumps = dumps.splitlines()
         dumps = [dump for dump in dumps if dump.startswith("back.sql")]
-        date_to_dump = (
+        date_to_dump = [
             cls.extract_date_from_dump_name(dump) for dump in dumps
-        )
+        ]
         latest = date_to_dump.sort()[-1]
         return cls.get_dump_name(latest)
 
