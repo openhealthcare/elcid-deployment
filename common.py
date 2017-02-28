@@ -10,13 +10,6 @@ def lexists(path):
 
 class Pip(object):
     @classmethod
-    def run_virtual_env_command(cls, some_cmd):
-        "/home/{0}/.virtualenvs/elcid-setup/bin/virtualenv {1}".format(
-            env.app_owner,
-            some_cmd
-        )
-
-    @classmethod
     def get_pip(cls):
         return "{}/bin/pip".format(
             env.virtual_env_path
@@ -30,7 +23,7 @@ class Pip(object):
     def create_virtual_env(cls):
         cls.install_virtualenv()
         if not lexists(env.virtual_env_path):
-            cls.run_virtual_env_command(env.virtual_env_path)
+            local("/usr/bin/virtualenv {0}".format(env.virtual_env_path))
 
     @classmethod
     def remove_virtualenv(cls):
