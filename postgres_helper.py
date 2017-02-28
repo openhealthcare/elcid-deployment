@@ -58,6 +58,7 @@ class Postgres(object):
         var_now = now.strftime("%d.%m.%y")
         return "back.sql.{}".format(var_now)
 
+    @classmethod
     def extract_date_from_dump_name(cls, dump_name):
         if "back.sql." not in dump_name:
             raise "incorrect date format, we expect back.sql.%d.%m.%y"
