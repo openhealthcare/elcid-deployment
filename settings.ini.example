@@ -29,6 +29,3 @@ base_dir=/usr/lib/ohc
 # optionally this will be loaded from with test, and dumped to/loaded from
 # in prod
 # db_dump_dir=var
-
-# previous branch
-# previous_branch=v0.6.1
