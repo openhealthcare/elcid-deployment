@@ -74,7 +74,7 @@ class Postgres(object):
         date_to_dump = (
             cls.extract_date_from_dump_name(dump) for dump in dumps
         )
-        latest = sorted(date_to_dump)[-1]
+        latest = date_to_dump.sort()[-1]
         return cls.get_dump_name(latest)
 
     @classmethod
@@ -93,3 +93,4 @@ class Postgres(object):
         full_file_name = os.path.join(
             env.db_dump_dir, cls.get_most_recent_database_dump()
         )
+        dump_str = "sudo -u postgres psql -d "
