@@ -7,6 +7,10 @@ from common import Git, Pip
 from postgres_helper import Postgres
 
 
+def dump_db():
+    setup_fab_env()
+
+
 def deploy_test():
     setup_fab_env()
     deployment.create_env()
@@ -15,6 +19,7 @@ def deploy_test():
         print "no dump directory provided, not loading in any existing data"
     else:
         Postgres.load_data()
+    Django.migrate()
 
 
 def django_deploy():

@@ -65,6 +65,7 @@ class Git(object):
                 local("git checkout {0}".format(env.branch_name))
                 local("git pull origin {}".format(env.branch_name))
 
+    @classmethod
     def remove_code_dir(cls):
         with lcd(env.home_dir):
             local("rm -rf {}".format(env.release_name))

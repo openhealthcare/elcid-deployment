@@ -53,11 +53,11 @@ class Postgres(object):
         cls.create_database()
 
     @classmethod
-    def get_dump_name(cls, now=None):
-        if not now:
-            now = datetime.datetime.now()
-        var_now = now.strftime("%d.%m.%y")
-        return "back.sql.{}".format(var_now)
+    def get_dump_name(cls, dt=None):
+        if not dt:
+            dt = datetime.datetime.now()
+        str_dt = dt.strftime("%d.%m.%y")
+        return "back.sql.{}".format(str_dt)
 
     @classmethod
     def extract_date_from_dump_name(cls, dump_name):
@@ -87,3 +87,9 @@ class Postgres(object):
             full_file_name
         )
         local(load_str)
+
+    @classmethod
+    def dump_data(cls):
+        full_file_name = os.path.join(
+            env.db_dump_dir, cls.get_most_recent_database_dump()
+        )
