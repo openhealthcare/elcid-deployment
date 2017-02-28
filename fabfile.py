@@ -37,7 +37,6 @@ def server_setup():
 
 def delete_environment():
     # note this does not change symlinks for for example nginx
-    # you'll need to fix that yourself
     setup_fab_env()
     Postgres.drop_database()
     Pip.remove_virtualenv()
