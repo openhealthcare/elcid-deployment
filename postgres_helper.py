@@ -54,7 +54,7 @@ class Postgres(object):
 
     @classmethod
     def get_dump_name(cls, now=None):
-        if not dt:
+        if not now:
             now = datetime.datetime.now()
         var_now = now.strftime("%d.%m.%y")
         return "back.sql.{}".format(var_now)
