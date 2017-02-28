@@ -23,7 +23,7 @@ class Pip(object):
     def create_virtual_env(cls):
         cls.install_virtualenv()
         if not lexists(env.virtual_env_path):
-            local("/usr/bin/local/virtualenv {0}".format(env.virtual_env_path))
+            local("/usr/local/bin/virtualenv {0}".format(env.virtual_env_path))
 
     @classmethod
     def remove_virtualenv(cls):
