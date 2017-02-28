@@ -33,3 +33,15 @@ class Postgres(object):
             cls.database_cmd("ALTER USER {0} WITH PASSWORD {1}".format(
                 env.app_owner, env.app_password
             ))
+
+    @classmethod
+    def restart_database():
+        if env.pg_version < (9, 0):
+            local('sudo /etc/init.d/postgresql-8.4 restart || /etc/init.d/postgresql-8.4 start')
+        else:
+            local('sudo /etc/init.d/postgresql restart || /etc/init.d/postgresql start')
+
+    @classmethod
+    def create_user_and_database(cls):
+        cls.create_user()
+        cls.create_database()

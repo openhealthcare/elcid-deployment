@@ -1,7 +1,7 @@
 import os
 from fabric.api import local, env
-from fabric.context_managers import prefix, lcd
-from common import Pip, lexists
+from fabric.context_managers import lcd
+from common import Pip, lexists, Git
 from postgres_helper import Postgres
 
 
@@ -21,28 +21,13 @@ def create_env():
         the virtualenv name to be 060
     """
     Pip.create_virtual_env()
-    with lcd(env.home_dir):
-        if not lexists(env.release_name):
-            local("git clone {0} {1}".format(env.github_url, env.release_name))
-        with lcd(env.release_name):
-            local("git fetch")
-            local("git checkout {0}".format(env.branch_name))
-            local("git pull origin {}".format(env.branch_name))
-
+    Git.checkout_branch()
     Pip.set_project_directory()
     with lcd(env.project_path):
         Pip.install_requirements()
     symlink_nginx()
-    create_database()
+    Postgres.create_user_and_database()
     symlink_upstart()
-
-
-def create_database(file_name=None):
-    """
-        create a database with the appropriate name
-    """
-    Postgres.create_user()
-    Postgres.create_database()
 
 
 def symlink_nginx():

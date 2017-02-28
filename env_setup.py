@@ -22,7 +22,8 @@ def get(section, option, default=None):
         print 'No section for', section, option
         return default
 
-def setup_env():
+
+def setup_fav_env():
     env.project_name = get('project', 'name')
     env.settings_module_name = get('project', 'settings_module_name')
     env.branch_name = get('project', 'branch')

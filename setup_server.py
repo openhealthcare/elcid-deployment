@@ -1,6 +1,7 @@
 import os
 from fabric.api import local, env, settings
-from common import lexists, restart_database
+from common import lexists
+from postgres_helper import Postgres
 
 
 class Apt(object):
@@ -87,7 +88,7 @@ def install_postgres():
         local("sudo rm {}".format(hba_conf))
     local("sudo cp database/pg_hba.conf {0}".format(hba_conf))
     local("sudo chown postgres:postgres {0}".format(hba_conf))
-    restart_database()
+    Postgres.restart_database()
 
 
 def create_directory(dir_name):

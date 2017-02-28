@@ -1,6 +1,6 @@
 from fabric.api import local, env, settings, hide
-from fabric.context_managers import lcd
 from fabric.contrib.files import _expand_path
+from fabric.context_managers import lcd
 
 
 def lexists(path):
@@ -50,8 +50,13 @@ class Pip(object):
             local("{0} install -r requirements.txt".format(cls.get_pip()))
 
 
-def restart_database():
-    if env.pg_version < (9, 0):
-        local('sudo /etc/init.d/postgresql-8.4 restart || /etc/init.d/postgresql-8.4 start')
-    else:
-        local('sudo /etc/init.d/postgresql restart || /etc/init.d/postgresql start')
+class Git(object):
+    @classmethod
+    def checkout_branch(cls):
+        with lcd(env.home_dir):
+            if not lexists(env.release_name):
+                local("git clone {0} {1}".format(env.github_url, env.release_name))
+            with lcd(env.release_name):
+                local("git fetch")
+                local("git checkout {0}".format(env.branch_name))
+                local("git pull origin {}".format(env.branch_name))
