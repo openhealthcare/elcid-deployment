@@ -53,8 +53,9 @@ class Postgres(object):
         cls.create_database()
 
     @classmethod
-    def get_dump_name(cls):
-        now = datetime.datetime.now()
+    def get_dump_name(cls, now=None):
+        if not dt:
+            now = datetime.datetime.now()
         var_now = now.strftime("%d.%m.%y")
         return "back.sql.{}".format(var_now)
 
