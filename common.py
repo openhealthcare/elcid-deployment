@@ -28,7 +28,7 @@ class Pip(object):
     @classmethod
     def set_project_directory(cls):
         local("echo '{0}' > {1}/.project".format(
-            env.home_dir, env.virtual_env_path
+            env.project_path, env.virtual_env_path
         ))
 
     @classmethod
