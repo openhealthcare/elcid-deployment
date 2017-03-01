@@ -1,5 +1,4 @@
 from fabric.api import local, env
-from fab.operations import put
 import os
 import datetime
 
@@ -95,7 +94,3 @@ class Postgres(object):
         full_file_name = cls.get_most_recent_database_dump()
         dump_str = "sudo -u postgres psql -d {0} > {1}"
         local(dump_str, env.db_name, full_file_name)
-
-    @classmethod
-    def sync_data(cls):
-        put(cls.get_most_recent_database_dump(), )
