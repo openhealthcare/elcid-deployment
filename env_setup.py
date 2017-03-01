@@ -22,7 +22,8 @@ def get(section, option, default=None):
         print 'No section for', section, option
         return default
 
-def setup_env():
+
+def setup_fab_env():
     env.project_name = get('project', 'name')
     env.settings_module_name = get('project', 'settings_module_name')
     env.branch_name = get('project', 'branch')
@@ -44,3 +45,8 @@ def setup_env():
         env.app_owner, env.release_name
     )
     env.pg_version = (9, 3)
+    db_dump_dir = get('system', 'db_dump_dir')
+    if db_dump_dir:
+        env.db_dump_dir = os.path.join(env.home_dir, db_dump_dir)
+    else:
+        env.db_dump_dir = None

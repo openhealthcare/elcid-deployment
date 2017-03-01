@@ -1,16 +1,38 @@
 from django_helper import Django
-from env_setup import setup_env
+from env_setup import setup_fab_env
+from fabric.api import env
 import deployment
 import setup_server
+from common import Git, Pip
+from postgres_helper import Postgres
 
 
-def deploy():
-    setup_env()
+def dump_db():
+    setup_fab_env()
+
+
+def deploy_test():
+    setup_fab_env()
     deployment.create_env()
+    Django.create_local_settings()
+    if not env.db_dump_dir:
+        print "no dump directory provided, not loading in any existing data"
+    else:
+        Postgres.load_data()
+    Django.migrate()
+    Django.create_gunicorn_settings()
+
+
+def django_deploy():
+    setup_fab_env()
+    Django.create_local_settings()
+    Django.migrate()
+    Django.load_lookup_lists()
+    Django.collect_static()
 
 
 def server_setup():
-    setup_env()
+    setup_fab_env()
     setup_server.create_users()
     setup_server.install_common()
     setup_server.install_nginx()
@@ -18,33 +40,36 @@ def server_setup():
     setup_server.install_postgres()
     setup_server.create_log_directory()
     setup_server.create_run_directory()
-    deploy()
-    Django.deployment_tasks()
+    deployment.create_env()
+    django_deploy()
     setup_server.start_supervisord_or_restart_app()
     setup_server.restart_nginx()
 
 
-def django_deploy():
-    setup_env()
-    Django.deployment_tasks()
+def delete_environment():
+    # note this does not change symlinks for for example nginx
+    setup_fab_env()
+    Postgres.drop_database()
+    Pip.remove_virtualenv()
+    Git.remove_code_dir()
 
 
 def restart_nginx():
-    setup_env()
+    setup_fab_env()
     setup_server.restart_nginx()
 
 
 def restart_everything():
-    setup_env()
+    setup_fab_env()
     setup_server.restart_app()
     setup_server.restart_nginx()
 
 
 def start_supervisord():
-    setup_env()
+    setup_fab_env()
     setup_server.start_supervisord_or_restart_app()
 
 
 def symlink_upstart():
-    setup_env()
+    setup_fab_env()
     deployment.symlink_upstart()

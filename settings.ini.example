@@ -23,3 +23,9 @@ base_dir=/usr/lib/ohc
 
 # Uncomment this if your deployment environment requires you to use a HTTP proxy
 #http_proxy=http://where_is_your_proxy
+
+# database dump directory
+# the directory to load database dumps to/from (relative to the base_dir)
+# optionally this will be loaded from with test, and dumped to/loaded from
+# in prod
+# db_dump_dir=var

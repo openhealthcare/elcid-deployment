@@ -1,6 +1,6 @@
 from fabric.api import local, env, settings, hide
-from fabric.context_managers import lcd
 from fabric.contrib.files import _expand_path
+from fabric.context_managers import lcd
 
 
 def lexists(path):
@@ -16,19 +16,23 @@ class Pip(object):
         )
 
     @classmethod
-    def install_virtualenvwrapper_if_necessary(cls):
+    def install_virtualenv(cls):
         local("pip install virtualenv")
 
     @classmethod
     def create_virtual_env(cls):
-        cls.install_virtualenvwrapper_if_necessary()
+        cls.install_virtualenv()
         if not lexists(env.virtual_env_path):
-            local("/usr/bin/virtualenv {0}".format(env.virtual_env_path))
+            local("/usr/local/bin/virtualenv {0}".format(env.virtual_env_path))
+
+    @classmethod
+    def remove_virtualenv(cls):
+        local("rm -rf /usr/bin/virtualenv/{}".format(env.project_name))
 
     @classmethod
     def set_project_directory(cls):
         local("echo '{0}' > {1}/.project".format(
-            env.home_dir, env.virtual_env_path
+            env.project_path, env.virtual_env_path
         ))
 
     @classmethod
@@ -50,8 +54,18 @@ class Pip(object):
             local("{0} install -r requirements.txt".format(cls.get_pip()))
 
 
-def restart_database():
-    if env.pg_version < (9, 0):
-        local('sudo /etc/init.d/postgresql-8.4 restart || /etc/init.d/postgresql-8.4 start')
-    else:
-        local('sudo /etc/init.d/postgresql restart || /etc/init.d/postgresql start')
+class Git(object):
+    @classmethod
+    def checkout_branch(cls):
+        with lcd(env.home_dir):
+            if not lexists(env.release_name):
+                local("git clone {0} {1}".format(env.github_url, env.release_name))
+            with lcd(env.release_name):
+                local("git fetch")
+                local("git checkout {0}".format(env.branch_name))
+                local("git pull origin {}".format(env.branch_name))
+
+    @classmethod
+    def remove_code_dir(cls):
+        with lcd(env.home_dir):
+            local("rm -rf {}".format(env.release_name))
