@@ -5,6 +5,7 @@ import deployment
 import setup_server
 from common import Git, Pip
 from postgres_helper import Postgres
+from fabric.operations import put
 
 
 def dump_db():
@@ -73,3 +74,15 @@ def start_supervisord():
 def symlink_upstart():
     setup_fab_env()
     deployment.symlink_upstart()
+
+
+def database_backup():
+    setup_fab_env()
+    Postgres.dump_data()
+    sftp = SFTP(env.db_sync_address)
+    # the assumption is that the place we're putting this is exactly the
+    # same as the place we're getting it from
+    sftp.put(
+        Postgres.get_recent_database_dump_path(),
+        Postgres.get_recent_database_dump_path() + "_test"
+    )
