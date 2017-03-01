@@ -20,7 +20,7 @@ def deploy_test():
     else:
         Postgres.load_data()
     Django.migrate()
-    Djanog.create_gunicorn_settings()
+    Django.create_gunicorn_settings()
 
 
 def django_deploy():
