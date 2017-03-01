@@ -87,5 +87,5 @@ def database_backup():
     # same as the place we're getting it from
     put(
         Postgres.get_recent_database_dump_path(),
-        Postgres.get_recent_database_dump_path() + "_test"
+        Postgres.get_recent_database_dump_path()
     )
