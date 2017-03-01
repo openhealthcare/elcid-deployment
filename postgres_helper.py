@@ -1,4 +1,5 @@
 from fabric.api import local, env
+from fab.operations import put
 import os
 import datetime
 
@@ -67,7 +68,7 @@ class Postgres(object):
         return datetime.datetime.strptime(dump_name, expected_str_format)
 
     @classmethod
-    def get_most_recent_database_dump(cls):
+    def get_recent_database_dump_path(cls):
         dumps = local("ls {}".format(env.db_dump_dir), capture=True)
         dumps = dumps.splitlines()
         dumps = [dump for dump in dumps if dump.startswith("back.sql")]
@@ -75,13 +76,14 @@ class Postgres(object):
             cls.extract_date_from_dump_name(dump) for dump in dumps
         )
         latest = sorted(date_to_dump)[-1]
-        return cls.get_dump_name(latest)
+        dump_name = cls.get_dump_name(latest)
+        return os.path.join(
+            env.db_dump_dir, dump_name
+        )
 
     @classmethod
     def load_data(cls):
-        full_file_name = os.path.join(
-            env.db_dump_dir, cls.get_most_recent_database_dump()
-        )
+        full_file_name = cls.get_most_recent_database_dump()
         load_str = "sudo -u postgres psql -d {0} -f {1}".format(
             env.db_name,
             full_file_name
@@ -90,7 +92,10 @@ class Postgres(object):
 
     @classmethod
     def dump_data(cls):
-        full_file_name = os.path.join(
-            env.db_dump_dir, cls.get_most_recent_database_dump()
-        )
-        dump_str = "sudo -u postgres psql -d "
+        full_file_name = cls.get_most_recent_database_dump()
+        dump_str = "sudo -u postgres psql -d {0} > {1}"
+        local(dump_str, env.db_name, full_file_name)
+
+    @classmethod
+    def sync_data(cls):
+        put(cls.get_most_recent_database_dump(), )

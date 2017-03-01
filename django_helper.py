@@ -2,6 +2,7 @@ import os
 from jinja2 import Environment, FileSystemLoader
 from fabric.api import local, env
 from fabric.context_managers import lcd
+from fabric.operations import prompt
 from common import lexists
 
 
@@ -52,6 +53,31 @@ class Django(object):
         if not lexists(local_settings_file):
             with open(local_settings_file, 'w+') as f:
                 f.write(output)
+
+    @classmethod
+    def create_gunicorn_settings(cls):
+
+        local_gunicorn = '{0}/etc/gunicorn.conf'.format(env.project_path)
+        gunicorn_conf_exists = lexists(local_gunicorn)
+        if gunicorn_conf_exists:
+            result = prompt(
+                'Local gunicorn exists, remove? (Y or N)',
+                default="Y",
+                validate=lambda x: x.upper() == "Y" or x.upper() == "N"
+            )
+            gunicorn_conf_exists = result == "N"
+
+        if gunicorn_conf_exists:
+            return
+
+        env_values = {
+            "env_name": env.virtual_env_path
+        }
+        template = jinja_env.get_template('gunicorn.conf.jinja2')
+        output = template.render(env_values)
+
+        with open(local_gunicorn, 'w') as f:
+            f.write(output)
 
     @classmethod
     def deployment_tasks(cls):
