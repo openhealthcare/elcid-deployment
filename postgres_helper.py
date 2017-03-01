@@ -82,7 +82,7 @@ class Postgres(object):
 
     @classmethod
     def load_data(cls):
-        full_file_name = cls.get_most_recent_database_dump()
+        full_file_name = cls.get_recent_database_dump_path()
         load_str = "sudo -u postgres psql -d {0} -f {1}".format(
             env.db_name,
             full_file_name
