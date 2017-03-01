@@ -91,6 +91,6 @@ class Postgres(object):
 
     @classmethod
     def dump_data(cls):
-        full_file_name = cls.get_most_recent_database_dump()
-        dump_str = "sudo -u postgres psql -d {0} > {1}"
-        local(dump_str, env.db_name, full_file_name)
+        full_file_name = cls.get_recent_database_dump_path()
+        dump_str = "postgres pg_dump {0} > {1}"
+        local(dump_str.format(env.db_name, full_file_name))

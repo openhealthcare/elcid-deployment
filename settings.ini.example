@@ -23,8 +23,12 @@ db_password='this is fake'
 # in prod
 # db_dump_dir=var
 
+
+[remote]
 # add a sync address, as would be taken in by sftp
-# db_sync_host=user@192.1.1.1
+# sync_host=user@192.1.1.1
+# sync_password="definitely a real password that we use"
+
 
 
 [system]

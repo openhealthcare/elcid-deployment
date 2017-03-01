@@ -51,4 +51,5 @@ def setup_fab_env():
     else:
         env.db_dump_dir = None
 
-    env.hosts = [get('db', 'db_sync_host')]
+    env.host_string = get('remote', 'sync_host')
+    env.password = get('remote', 'sync_password')
