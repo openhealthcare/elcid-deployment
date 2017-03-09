@@ -21,6 +21,7 @@ def deploy_test():
         Postgres.load_data()
     Django.migrate()
     Django.create_gunicorn_settings()
+    Django.create_celery_settings()
 
 
 def django_deploy():
