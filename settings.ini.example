@@ -17,15 +17,23 @@ db_username=ohc
 # Password for the database user above
 db_password='this is fake'
 
+# database dump directory
+# the directory to load database dumps to/from (relative to the base_dir)
+# optionally this will be loaded from with test, and dumped to/loaded from
+# in prod
+# db_dump_dir=var
+
+
+[remote]
+# add a sync address, as would be taken in by sftp
+# sync_host=user@192.1.1.1
+# sync_password="definitely a real password that we use"
+
+
+
 [system]
 # Directory to which we should deploy applications
 base_dir=/usr/lib/ohc
 
 # Uncomment this if your deployment environment requires you to use a HTTP proxy
 #http_proxy=http://where_is_your_proxy
-
-# database dump directory
-# the directory to load database dumps to/from (relative to the base_dir)
-# optionally this will be loaded from with test, and dumped to/loaded from
-# in prod
-# db_dump_dir=var

@@ -45,8 +45,11 @@ def setup_fab_env():
         env.app_owner, env.release_name
     )
     env.pg_version = (9, 3)
-    db_dump_dir = get('system', 'db_dump_dir')
+    db_dump_dir = get('db', 'db_dump_dir')
     if db_dump_dir:
         env.db_dump_dir = os.path.join(env.home_dir, db_dump_dir)
     else:
         env.db_dump_dir = None
+
+    env.host_string = get('remote', 'sync_host')
+    env.password = get('remote', 'sync_password')
