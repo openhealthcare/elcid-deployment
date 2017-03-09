@@ -55,29 +55,41 @@ class Django(object):
                 f.write(output)
 
     @classmethod
-    def create_gunicorn_settings(cls):
-
-        local_gunicorn = '{0}/etc/gunicorn.conf'.format(env.project_path)
-        gunicorn_conf_exists = lexists(local_gunicorn)
-        if gunicorn_conf_exists:
+    def write_conf(cls, conf_name, env_values):
+        local_conf = '{0}/etc/{1}.conf'.format(
+            env.project_path, conf_name
+        )
+        conf_exists = lexists(local_conf)
+        if conf_exists:
             result = prompt(
-                'Local gunicorn exists, remove? (Y or N)',
+                'Local {} exists, remove? (Y or N)'.format(conf_name),
                 default="Y",
                 validate=lambda x: x.upper() == "Y" or x.upper() == "N"
             )
-            gunicorn_conf_exists = result == "N"
+            conf_exists = result == "N"
 
-        if gunicorn_conf_exists:
+        if conf_exists:
             return
 
-        env_values = {
-            "env_name": env.virtual_env_path
-        }
-        template = jinja_env.get_template('gunicorn.conf.jinja2')
+        template = jinja_env.get_template('{}.conf.jinja2'.format(conf_name))
         output = template.render(env_values)
 
-        with open(local_gunicorn, 'w') as f:
+        with open(local_conf, 'w') as f:
             f.write(output)
+
+    @classmethod
+    def create_gunicorn_settings(cls):
+        cls.write_conf(
+            "gunicorn",
+            dict(env_name=env.virtual_env_path)
+        )
+
+    @classmethod
+    def create_celery_settings(cls):
+        cls.write_conf(
+            "celery",
+            dict(env_name=env.virtual_env_path)
+        )
 
     @classmethod
     def deployment_tasks(cls):
