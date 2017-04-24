@@ -50,26 +50,25 @@ class Django(object):
             module_name = env.settings_module_name
         local_settings_file = '{0}/{1}/local_settings.py'.format(env.project_path, module_name)
 
-        if not lexists(local_settings_file):
-            with open(local_settings_file, 'w') as f:
-                f.write(output)
+        with open(local_settings_file, 'w') as f:
+            f.write(output)
 
     @classmethod
     def write_conf(cls, conf_name, env_values):
         local_conf = '{0}/etc/{1}.conf'.format(
             env.project_path, conf_name
         )
-        conf_exists = lexists(local_conf)
-        if conf_exists:
-            result = prompt(
-                'Local {} exists, remove? (Y or N)'.format(conf_name),
-                default="Y",
-                validate=lambda x: x.upper() == "Y" or x.upper() == "N"
-            )
-            conf_exists = result == "N"
+        # conf_exists = lexists(local_conf)
+        # if conf_exists:
+        #     result = prompt(
+        #         'Local {} exists, remove? (Y or N)'.format(conf_name),
+        #         default="Y",
+        #         validate=lambda x: x.upper() == "Y" or x.upper() == "N"
+        #     )
+        #     conf_exists = result == "N"
 
-        if conf_exists:
-            return
+        # if conf_exists:
+        #     return
 
         template = jinja_env.get_template('{}.conf.jinja2'.format(conf_name))
         output = template.render(env_values)

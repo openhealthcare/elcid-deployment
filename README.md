@@ -47,3 +47,12 @@ fab deploy_prod, or you can do it yourself with
 ```bash
 fab setup_cron
 ```
+
+# Encryption keys
+
+Generate keys:
+`openssl req -x509 -nodes -newkey rsa:2048 -keyout private-key.pem -out public-key.pem`
+
+# Decrypting a backup
+
+`openssl smime -decrypt -in encrypted_backyp.dat -binary -inform DEM -inkey private-key.pem -out database.sql`

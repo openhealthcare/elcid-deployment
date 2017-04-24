@@ -13,3 +13,4 @@ opal.sqlite.*
 .coveragerc
 *#
 settings.ini
+*.pem

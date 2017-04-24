@@ -57,3 +57,4 @@ def setup_fab_env():
 
     env.pem_key = get('sync', 'pem_key')
     env.out_file = get('sync', 'out_file')
+    env.other_dir = get('sync', 'other_dir')
