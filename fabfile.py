@@ -12,9 +12,11 @@ from cron import Cron
 def dump_db():
     setup_fab_env()
 
+
 def setup_cron():
     setup_fab_env()
     Cron.setup_backup()
+
 
 def deploy_test():
     setup_fab_env()
@@ -28,6 +30,23 @@ def deploy_test():
     Django.collect_static()
     Django.create_gunicorn_settings()
     Django.create_celery_settings()
+    setup_server.restart_app()
+    setup_server.restart_nginx()
+
+
+def deploy_prod():
+    setup_fab_env()
+    deployment.create_env()
+    Django.create_local_settings()
+    if not env.db_dump_dir:
+        print "no dump directory provided, not loading in any existing data"
+    else:
+        Postgres.load_data()
+    Django.migrate()
+    Django.collect_static()
+    Django.create_gunicorn_settings()
+    Django.create_celery_settings()
+    setup_cron()
     setup_server.restart_app()
     setup_server.restart_nginx()
 
