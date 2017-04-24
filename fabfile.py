@@ -55,6 +55,7 @@ def deploy_prod():
 def django_deploy():
     setup_fab_env()
     Django.create_local_settings()
+    Django.create_gunicorn_settings()
     Django.migrate()
     Django.load_lookup_lists()
     Django.collect_static()
