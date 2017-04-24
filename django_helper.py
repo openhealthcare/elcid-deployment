@@ -94,7 +94,6 @@ class Django(object):
     @classmethod
     def deployment_tasks(cls):
         cls.create_local_settings()
-        cls.create_gunicorn_settings()
         cls.migrate()
         cls.load_lookup_lists()
         cls.collect_static()
