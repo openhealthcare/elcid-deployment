@@ -37,7 +37,7 @@ class Postgres(object):
             ))
 
     @classmethod
-    def restart_database():
+    def restart_database(cls):
         if env.pg_version < (9, 0):
             local('sudo /etc/init.d/postgresql-8.4 restart || /etc/init.d/postgresql-8.4 start')
         else:

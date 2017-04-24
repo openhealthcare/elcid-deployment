@@ -51,7 +51,7 @@ class Django(object):
         local_settings_file = '{0}/{1}/local_settings.py'.format(env.project_path, module_name)
 
         if not lexists(local_settings_file):
-            with open(local_settings_file, 'w+') as f:
+            with open(local_settings_file, 'w') as f:
                 f.write(output)
 
     @classmethod
@@ -94,6 +94,7 @@ class Django(object):
     @classmethod
     def deployment_tasks(cls):
         cls.create_local_settings()
+        cls.create_gunicorn_settings()
         cls.migrate()
         cls.load_lookup_lists()
         cls.collect_static()

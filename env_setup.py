@@ -35,6 +35,7 @@ def setup_fab_env():
     env.database_owner = get('db', 'os_user')
     env.home_dir = os.path.abspath(get('system', 'base_dir'))
     env.project_path = os.path.join(env.home_dir, env.release_name)
+    env.nix_user = get('project', 'user')
     env.app_owner = get('db', 'db_username')
     env.app_password = get('db', 'db_password')
     env.db_name = env.release_name.replace("-", "").replace(".", "")
@@ -42,7 +43,7 @@ def setup_fab_env():
     env.http_proxy = get('system', 'http_proxy')
     # not set up to begin with created by common.create_virtual_env
     env.virtual_env_path = "/home/{0}/.virtualenvs/{1}".format(
-        env.app_owner, env.release_name
+        env.nix_user, env.release_name
     )
     env.pg_version = (9, 3)
     db_dump_dir = get('db', 'db_dump_dir')
