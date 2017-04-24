@@ -36,6 +36,7 @@ def deploy_test():
 
 def deploy_prod():
     setup_fab_env()
+    database_backup()
     deployment.create_env()
     Django.create_local_settings()
     if not env.db_dump_dir:
@@ -103,12 +104,20 @@ def symlink_upstart():
     deployment.symlink_upstart()
 
 
-def database_backup():
-    setup_fab_env()
-    Postgres.dump_data()
-    # the assumption is that the place we're putting this is exactly the
-    # same as the place we're getting it from
-    put(
-        Postgres.get_recent_database_dump_path(),
-        Postgres.get_recent_database_dump_path()
+# def database_backup():
+#     setup_fab_env()
+#     Postgres.dump_data()
+#     # the assumption is that the place we're putting this is exactly the
+#     # same as the place we're getting it from
+#     put(
+#         Postgres.get_recent_database_dump_path(),
+#         Postgres.get_recent_database_dump_path()
     )
+
+def database_backup():
+    command = "openssl rsautl -encrypt -inkey {} -pubin -in {1} -out {2}"
+    command = command.format(
+        env.pem_key, Postgres.get_recent_database_dump_path(), env.out_file
+    )
+    local(cmd)
+    local("mv {0} {1}".format(env.out_file, env.other_dir))

@@ -54,3 +54,6 @@ def setup_fab_env():
 
     env.host_string = get('remote', 'sync_host')
     env.password = get('remote', 'sync_password')
+
+    env.pem_key = get('sync', 'pem_key')
+    env.out_file = get('sync', 'out_file')

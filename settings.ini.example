@@ -30,6 +30,10 @@ db_password='this is fake'
 # sync_password="definitely a real password that we use"
 
 
+[sync]
+# pem_key="/path/to/your/pem/key"
+# out_file="some/encrypted_field_name.pem"
+
 
 [system]
 # Directory to which we should deploy applications
