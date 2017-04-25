@@ -92,5 +92,7 @@ class Postgres(object):
     @classmethod
     def dump_data(cls):
         full_file_name = os.path.join(env.db_dump_dir, cls.get_dump_name())
-        dump_str = "sudo -u postgres pg_dump {0} > {1}"
-        local(dump_str.format(env.db_name, full_file_name))
+        # assumes you've set pgpass independently
+        dump_str = "pg_dump -d {0} -U {1} > {2}"
+        local(dump_str.format(env.db_name, env.app_owner, full_file_name))
+        return full_file_name

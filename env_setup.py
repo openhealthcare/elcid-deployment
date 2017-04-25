@@ -39,13 +39,14 @@ def setup_fab_env():
     env.app_owner = get('db', 'db_username')
     env.app_password = get('db', 'db_password')
     env.db_name = env.release_name.replace("-", "").replace(".", "")
-    env.app_name = env.project_name
+    env.app_name = get('project', 'app_name') or env.project_name
+    env.log_dir = get('project', 'log_dir')
     env.http_proxy = get('system', 'http_proxy')
     # not set up to begin with created by common.create_virtual_env
     env.virtual_env_path = "/home/{0}/.virtualenvs/{1}".format(
         env.nix_user, env.release_name
     )
-    env.pg_version = (9, 3)
+    env.pg_version = (9, 5)
     db_dump_dir = get('db', 'db_dump_dir')
     if db_dump_dir:
         env.db_dump_dir = os.path.join(env.home_dir, db_dump_dir)
@@ -57,4 +58,3 @@ def setup_fab_env():
 
     env.pem_key = get('sync', 'pem_key')
     env.out_file = get('sync', 'out_file')
-    env.other_dir = get('sync', 'other_dir')

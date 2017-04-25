@@ -59,11 +59,12 @@ def symlink_upstart():
 
 def database_backup():
     setup_fab_env()
-    Postgres.dump_data()
-    command = " openssl smime -encrypt -binary -aes-256-cbc -in {1} \
+    file_dump = Postgres.dump_data()
+    file_dump_enc = "{}.enc".format(file_dump)
+    command = "openssl smime -encrypt -aes256 -binary -in {1} \
 -out {2} -outform DER {0}"
     command = command.format(
-        env.pem_key, Postgres.get_recent_database_dump_path(), env.out_file
+        env.pem_key, file_dump, file_dump_enc
     )
     local(command)
-    local("mv {0} {1}".format(env.out_file, env.other_dir))
+    local("mv {0} {1}".format(file_dump_enc, env.out_file))

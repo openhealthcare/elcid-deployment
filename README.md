@@ -51,8 +51,9 @@ fab setup_cron
 # Encryption keys
 
 Generate keys:
-`openssl req -x509 -nodes -newkey rsa:2048 -keyout private-key.pem -out public-key.pem`
+`openssl req -newkey rsa:2048 -keyout privkey.pem -out req.pem`
+`openssl x509 -req -in req.pem -signkey privkey.pem -out cert.pem`
 
 # Decrypting a backup
 
-`openssl smime -decrypt -in encrypted_backyp.dat -binary -inform DEM -inkey private-key.pem -out database.sql`
+openssl smime -decrypt -in {file path}/latest_backup.enc.sql -inform DER -inkey {key path}/privkey.pem -out unencrypted.sql

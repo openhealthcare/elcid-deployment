@@ -20,6 +20,8 @@ class Apt(object):
 
 
 DEPLOYMENT_PACKAGES = [
+    "postgresql",
+    "postgresql-contrib",
     "python-psycopg2",
 
     # Python Dev
