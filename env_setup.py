@@ -27,7 +27,7 @@ def setup_fab_env():
     env.project_name = get('project', 'name')
     env.settings_module_name = get('project', 'settings_module_name')
     env.branch_name = get('project', 'branch')
-    env.release_name = get_release_name()
+    env.release_name = env.project_name
     github_user = get('project', 'github_user')
     env.github_url = "https://github.com/{0}/{1}.git".format(
         github_user, env.project_name,

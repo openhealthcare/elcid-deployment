@@ -57,6 +57,11 @@ def symlink_upstart():
     setup_fab_env()
     deployment.symlink_upstart()
 
+def create_database():
+    setup_fab_env()
+    Postgres.create_database()
+
+
 def database_backup():
     setup_fab_env()
     file_dump = Postgres.dump_data()

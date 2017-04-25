@@ -119,11 +119,11 @@ def _restart_app_command():
     )
 
 def restart_app():
-    local(_restart_app_command())
+    local("pkill supervis; pkill gunic")
+    local("{0}/bin/supervisord -c {1}/etc/production.conf".format(env.virtual_env_path, env.project_path))
 
 def start_supervisord_or_restart_app():
-    local("pgrep supervisord && {2} || {0}/bin/supervisord -c {1}/etc/production.conf".format(
-        env.virtual_env_path, env.project_path, _restart_app_command()))
+    restart_app()
 
 
 def restart_gunicorn():
