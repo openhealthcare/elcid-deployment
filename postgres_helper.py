@@ -91,6 +91,7 @@ class Postgres(object):
 
     @classmethod
     def dump_data(cls):
+        # presumes you've set up your ~/.pgpass
         full_file_name = cls.get_recent_database_dump_path()
-        dump_str = "postgres pg_dump {0} > {1}"
-        local(dump_str.format(env.db_name, full_file_name))
+        dump_str = "pg_dump -d {0} -U {1} > {2}"
+        local(dump_str.format(env.db_name, env.app_owner, full_file_name))
