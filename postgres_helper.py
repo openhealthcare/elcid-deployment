@@ -60,6 +60,10 @@ class Postgres(object):
         return "back.sql.{}".format(str_dt)
 
     @classmethod
+    def get_todays_dump_name(cls):
+        return os.path.join(env.db_dump_dir, cls.get_dump_name())
+
+    @classmethod
     def extract_date_from_dump_name(cls, dump_name):
         if "back.sql." not in dump_name:
             raise "incorrect date format, we expect back.sql.%d.%m.%y"
@@ -92,6 +96,6 @@ class Postgres(object):
     @classmethod
     def dump_data(cls):
         # presumes you've set up your ~/.pgpass
-        full_file_name = cls.get_recent_database_dump_path()
+        full_file_name = cls.get_todays_dump_name()
         dump_str = "pg_dump -d {0} -U {1} > {2}"
         local(dump_str.format(env.db_name, env.app_owner, full_file_name))
