@@ -15,7 +15,7 @@ def create_env():
         we strip off the first letter and the .s so we expect
         the virtualenv name to be 060
     """
-    Pip.nix_user()
+    Pip.create_virtual_env()
     Git.checkout_branch()
     Pip.set_project_directory()
     with lcd(env.project_path):
