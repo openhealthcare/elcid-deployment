@@ -7,6 +7,8 @@ from common import Git, Pip
 from postgres_helper import Postgres
 from fabric.operations import put
 from cron import Cron
+from fabric.context_managers import lcd
+from deployment import symlink_nginx, symlink_upstart
 
 
 def dump_db():
@@ -20,7 +22,14 @@ def setup_cron():
 
 def deploy_test():
     setup_fab_env()
-    deployment.create_env()
+    Pip.create_virtual_env()
+    Git.checkout_branch()
+    Pip.set_project_directory()
+    with lcd(env.project_path):
+        Pip.install_requirements()
+    symlink_nginx()
+    Postgres.create_user_and_database()
+    symlink_upstart()
     Django.create_local_settings()
     if not env.db_dump_dir:
         print "no dump directory provided, not loading in any existing data"

@@ -5,10 +5,6 @@ from common import Pip, lexists, Git
 from postgres_helper import Postgres
 
 
-def install_requirements():
-    Pip.install_requirements()
-
-
 def create_env():
     """
         so we assume the branch name is something like v0.6.0
