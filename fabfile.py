@@ -124,4 +124,5 @@ def database_backup():
 
 
 def postgres(method, *args, **kwargs):
+    setup_fab_env()
     return getattr(Postgres, method)(*args, **kwargs)
