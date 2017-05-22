@@ -6,10 +6,13 @@ import ConfigParser
 
 from fabric.api import env
 
-from deployment import get_release_name
 
 config = ConfigParser.RawConfigParser()
 config.read(os.environ.get('ELCID_ENV', 'settings.ini'))
+
+
+def get_release_name():
+    return "{0}-{1}".format(env.project_name, env.branch_name)
 
 
 def get(section, option, default=None):

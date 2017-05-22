@@ -5,11 +5,6 @@ from common import Pip, lexists, Git
 from postgres_helper import Postgres
 
 
-def get_release_name():
-    release_name = env.branch_name.replace(".", "")[1:]
-    return "{0}{1}".format(env.project_name, release_name)
-
-
 def install_requirements():
     Pip.install_requirements()
 
@@ -20,7 +15,7 @@ def create_env():
         we strip off the first letter and the .s so we expect
         the virtualenv name to be 060
     """
-    Pip.create_virtual_env()
+    Pip.nix_user()
     Git.checkout_branch()
     Pip.set_project_directory()
     with lcd(env.project_path):
