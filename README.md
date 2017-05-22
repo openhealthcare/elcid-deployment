@@ -47,3 +47,14 @@ fab deploy_prod, or you can do it yourself with
 ```bash
 fab setup_cron
 ```
+
+# Utility
+All Postgres methods from postgres_helper are exposed, run the task postgres, with you method name, followed by args, kwargs.
+
+for example
+
+```bash
+fab postgres:get_recent_database_dump_path
+```
+
+will return the latest database dump with full path

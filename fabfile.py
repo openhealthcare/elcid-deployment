@@ -121,3 +121,7 @@ def database_backup():
         Postgres.get_recent_database_dump_path(),
         Postgres.get_recent_database_dump_path()
     )
+
+
+def postgres(method, *args, **kwargs):
+    return getattr(Postgres, method)(*args, **kwargs)
