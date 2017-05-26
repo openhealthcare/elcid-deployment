@@ -1,7 +1,7 @@
 from fabric.api import local, env
+from fabric.contrib.console import confirm
 import os
 import datetime
-from fabric.operations import prompt
 
 PREFACE = "sudo -u postgres psql --command"
 
@@ -79,24 +79,17 @@ class Postgres(object):
     @classmethod
     def refresh_database(cls):
         user_confirm = """This will drop the database {0} and restore it from"
-        {1} are you sure you wish to continue? (y or N)
+        {1} are you sure you wish to continue?
         """
         user_confirm = user_confirm.format(
             env.db_name, cls.get_recent_database_dump_path()
         )
-        result = prompt(
-            user_confirm,
-            default="N",
-            validate=lambda x: x.upper() == "Y" or x.upper() == "N"
-        )
+        confirmed = confirm(user_confirm, default=False)
 
-        if result.upper() == "N":
-            return
-        else:
+        if confirmed:
             cls.drop_database()
             cls.create_database()
             cls.load_data()
-
 
     @classmethod
     def get_recent_database_dump_path(cls):
