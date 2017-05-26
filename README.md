@@ -49,7 +49,7 @@ fab setup_cron
 ```
 
 # Utility
-All Postgres methods from postgres_helper are exposed, run the task postgres, with you method name, followed by args, kwargs.
+All Postgres and Pip methods from postgres_helper are exposed, run the task postgres, with you method name, followed by args, kwargs.
 
 for example
 

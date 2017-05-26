@@ -1,8 +1,9 @@
 import os
 from fabric.api import local, env
 from fabric.context_managers import lcd
-from common import Pip, lexists, Git
+from common import lexists, Git
 from postgres_helper import Postgres
+from pip_helper import Pip
 
 
 def create_env():

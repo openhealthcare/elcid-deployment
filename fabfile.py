@@ -3,7 +3,8 @@ from env_setup import setup_fab_env
 from fabric.api import env
 import deployment
 import setup_server
-from common import Git, Pip
+from common import Git
+from pip_helper import Pip
 from postgres_helper import Postgres
 from fabric.operations import put
 from cron import Cron
@@ -125,5 +126,12 @@ def database_backup():
 def postgres(method, *args, **kwargs):
     setup_fab_env()
     result = getattr(Postgres, method)(*args, **kwargs)
+    print result
+    return result
+
+
+def pip(method, *args, **kwargs):
+    setup_fab_env()
+    result = getattr(Pip, method)(*args, **kwargs)
     print result
     return result
