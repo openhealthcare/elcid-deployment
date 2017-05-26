@@ -106,7 +106,6 @@ def start_supervisord():
     setup_fab_env()
     setup_server.start_supervisord_or_restart_app()
 
-
 def symlink_upstart():
     setup_fab_env()
     deployment.symlink_upstart()

@@ -66,9 +66,8 @@ class Django(object):
                 default="Y",
                 validate=lambda x: x.upper() == "Y" or x.upper() == "N"
             )
-            conf_exists = result == "N"
 
-        if conf_exists:
+        if result.upper() == "N":
             return
 
         template = jinja_env.get_template('{}.conf.jinja2'.format(conf_name))
