@@ -2,7 +2,7 @@ import os
 from jinja2 import Environment, FileSystemLoader
 from fabric.api import local, env
 from fabric.context_managers import lcd
-from fabric.operations import prompt
+from fabric.contrib.console import confirm
 from common import lexists
 
 
@@ -56,19 +56,17 @@ class Django(object):
 
     @classmethod
     def write_conf(cls, conf_name, env_values):
+        confirmed = False
         local_conf = '{0}/etc/{1}.conf'.format(
             env.project_path, conf_name
         )
         conf_exists = lexists(local_conf)
         if conf_exists:
-            result = prompt(
-                'Local {} exists, remove? (Y or N)'.format(conf_name),
-                default="Y",
-                validate=lambda x: x.upper() == "Y" or x.upper() == "N"
+            confirmed = confirm(
+                'Local {} exists, would you like to replace it?'.format(conf_name),
             )
-            conf_exists = result == "N"
 
-        if conf_exists:
+        if not confirmed:
             return
 
         template = jinja_env.get_template('{}.conf.jinja2'.format(conf_name))

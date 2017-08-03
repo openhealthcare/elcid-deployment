@@ -1,4 +1,5 @@
 from fabric.api import local, env
+from fabric.contrib.console import confirm
 import os
 import datetime
 
@@ -8,10 +9,15 @@ PREFACE = "sudo -u postgres psql --command"
 class Postgres(object):
     @classmethod
     def database_cmd(cls, command, capture=False):
+        """ Runs a database command via the command line
+        """
         return local('{0} "{1}"'.format(PREFACE, command), capture=capture)
 
     @classmethod
     def create_database(cls):
+        """ creates a database and user if they don't already exist.
+            the db_name is created from the release name
+        """
         database_exists = "1" in local(
             "sudo -u postgres psql -l | grep '{}' | wc -l".format(env.db_name),
             capture=True
@@ -25,6 +31,9 @@ class Postgres(object):
 
     @classmethod
     def create_user(cls):
+        """ the user is creates a user if it doesn't exist
+            the user name is taken from settings.db.db_name
+        """
         user_exists = 'found' in cls.database_cmd(
             "SELECT 'found' FROM pg_roles WHERE rolname='{}'".format(env.app_owner),
             capture=True
@@ -51,6 +60,7 @@ class Postgres(object):
     def create_user_and_database(cls):
         cls.create_user()
         cls.create_database()
+        cls.load_data()
 
     @classmethod
     def get_dump_name(cls, dt=None):
@@ -69,6 +79,21 @@ class Postgres(object):
             raise "incorrect date format, we expect back.sql.%d.%m.%y"
         expected_str_format = "back.sql.%d.%m.%y"
         return datetime.datetime.strptime(dump_name, expected_str_format)
+
+    @classmethod
+    def refresh_database(cls):
+        user_confirm = """This will drop the database {0} and restore it from"
+        {1} are you sure you wish to continue?
+        """
+        user_confirm = user_confirm.format(
+            env.db_name, cls.get_recent_database_dump_path()
+        )
+        confirmed = confirm(user_confirm, default=False)
+
+        if confirmed:
+            cls.drop_database()
+            cls.create_database()
+            cls.load_data()
 
     @classmethod
     def get_recent_database_dump_path(cls):
