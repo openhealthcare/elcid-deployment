@@ -1,6 +1,8 @@
 from crontab import CronTab
 from fabric.api import env
 from common import lexists
+import os
+import stat
 
 
 class Cron(object):
@@ -11,17 +13,25 @@ class Cron(object):
     @classmethod
     def setup_backup(cls):
         # currently using root, not nice but we su into postgres
-        fabric_virtual_env = "/home/{0}/.virtualenvs/elcid-setup/bin/fab"
-        fabric_virtual_env = fabric_virtual_env.format(env.nix_user)
+        lexists(os.path)
+        curr_dir = os.path.realpath(os.path.dirname(__file__))
+        backup_script = os.path.join(curr_dir, "database_backup.sh")
+        if not os.path.isfile(backup_script):
+            raise ValueError(
+                "Unable to find the file {}".format(backup_script)
+            )
+
+        os.chmod(backup_script, stat.S_IXUSR | stat.S_IRUSR | stat.S_IWUSR)
+
+        if not os.access(backup_script, os.X_OK):
+            raise ValueError(
+                "Unable to execute {}".format(backup_script)
+            )
+
         comment = cls.get_comment()
         crontab = CronTab(user=True)
         crontab.remove_all(comment=comment)
-        if not lexists(fabric_virtual_env):
-            err = "Unable to find our virtual env for the contab {}"
-            err.format(fabric_virtual_env)
-            raise Exception(err)
-        command = "{} database_backup".format(fabric_virtual_env)
-        job = crontab.new(command=command, comment=comment)
+        job = crontab.new(command=backup_script, comment=comment)
 
         # run every day
         job.every().dom()

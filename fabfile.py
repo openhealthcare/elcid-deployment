@@ -3,20 +3,75 @@ from env_setup import setup_fab_env
 from fabric.api import env, local
 import deployment
 import setup_server
-from common import Git, Pip
+from common import Git
+from pip_helper import Pip
 from postgres_helper import Postgres
 from fabric.operations import put
 from cron import Cron
+from fabric.context_managers import lcd
+from deployment import symlink_nginx, symlink_upstart
+
 
 def dump_db():
     setup_fab_env()
+
 
 def setup_cron():
     setup_fab_env()
     Cron.setup_backup()
 
+
+def deploy_test():
+    setup_fab_env()
+    Pip.create_virtual_env()
+    Git.checkout_branch()
+    Pip.set_project_directory()
+    with lcd(env.project_path):
+        Pip.install_requirements()
+    symlink_nginx()
+    Postgres.create_user_and_database()
+    symlink_upstart()
+    Django.create_local_settings()
+    if not env.db_dump_dir:
+        print "no dump directory provided, not loading in any existing data"
+    else:
+        Postgres.load_data()
+    Django.migrate()
+    Django.collect_static()
+    Django.create_gunicorn_settings()
+    Django.create_celery_settings()
+    setup_server.restart_app()
+    setup_server.restart_nginx()
+
+
+def deploy_prod():
+    setup_fab_env()
+    deployment.create_env()
+    Django.create_local_settings()
+    if not env.db_dump_dir:
+        print "no dump directory provided, not loading in any existing data"
+    else:
+        Postgres.load_data()
+    Django.migrate()
+    Django.collect_static()
+    Django.create_gunicorn_settings()
+    Django.create_celery_settings()
+    setup_cron()
+    setup_server.restart_app()
+    setup_server.restart_nginx()
+
+
+def django_deploy():
+    setup_fab_env()
+    Django.create_local_settings()
+    Django.migrate()
+    Django.load_lookup_lists()
+    Django.collect_static()
+
+
 def load_ipfjes_data():
     run_management_command('import_soc_codes')
+
 
 def server_setup():
     setup_fab_env()
@@ -73,3 +128,16 @@ def database_backup():
     )
     local(command)
     local("mv {0} {1}".format(file_dump_enc, env.out_file))
+
+def postgres(method, *args, **kwargs):
+    setup_fab_env()
+    result = getattr(Postgres, method)(*args, **kwargs)
+    print result
+    return result
+
+
+def pip(method, *args, **kwargs):
+    setup_fab_env()
+    result = getattr(Pip, method)(*args, **kwargs)
+    print result
+    return result

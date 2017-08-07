@@ -2,7 +2,7 @@ import os
 from jinja2 import Environment, FileSystemLoader
 from fabric.api import local, env
 from fabric.context_managers import lcd
-from fabric.operations import prompt
+from fabric.contrib.console import confirm
 from common import lexists
 
 
@@ -55,6 +55,7 @@ class Django(object):
 
     @classmethod
     def write_conf(cls, conf_name, env_values):
+        confirmed = False
         local_conf = '{0}/etc/{1}.conf'.format(
             env.project_path, conf_name
         )
