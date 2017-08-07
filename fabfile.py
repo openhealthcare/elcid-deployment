@@ -95,9 +95,11 @@ def server_setup():
     setup_server.restart_nginx()
     setup_cron()
 
+
 def restart_nginx():
     setup_fab_env()
     setup_server.restart_nginx()
+
 
 def restart_everything():
     setup_fab_env()

@@ -60,7 +60,6 @@ class Postgres(object):
     def create_user_and_database(cls):
         cls.create_user()
         cls.create_database()
-        cls.load_data()
 
     @classmethod
     def get_dump_name(cls, dt=None):
