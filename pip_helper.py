@@ -11,7 +11,10 @@ class Pip(object):
 
     @classmethod
     def install_virtualenv(cls):
-        local("pip install virtualenv")
+        if env.http_proxy:
+            local("pip install virtualenv --proxy {}".format(env.http_proxy))
+        else:
+            local("pip install virtualenv")
 
     @classmethod
     def create_virtual_env(cls):
@@ -34,9 +37,9 @@ class Pip(object):
         pip = cls.get_pip()
         for pkg in pkgs:
             if env.http_proxy:
-                local('{0} install -U {1}'.format(pip, pkg))
-            else:
                 local('{0} install --proxy {2} -U {1}'.format(pip, pkg, env.http_proxy))
+            else:
+                local('{0} install -U {1}'.format(pip, pkg))
 
     @classmethod
     def install_requirements(cls):
