@@ -90,7 +90,8 @@ def server_setup():
     Django.migrate()
     Django.load_lookup_lists()
     Django.collect_static()
-    load_ipfjes_data()
+    # the line below should only be run on the initial load or it will delete foriegn keys
+    # load_ipfjes_data()
     setup_server.start_supervisord_or_restart_app()
     setup_server.restart_nginx()
     setup_cron()
