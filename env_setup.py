@@ -36,7 +36,7 @@ def setup_fab_env():
         github_user, env.project_name,
     )
     env.database_owner = get('db', 'os_user')
-    env.home_dir = os.path.abspath(get('system', 'base_dir'))
+    env.home_dir = os.path.abspath(config.get('system', 'base_dir'))
     env.project_path = os.path.join(env.home_dir, env.release_name)
     env.nix_user = get('project', 'user')
     env.app_owner = get('db', 'db_username')
