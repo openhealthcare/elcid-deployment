@@ -18,7 +18,7 @@ class Postgres(object):
         """ creates a database and user if they don't already exist.
             the db_name is created from the release name
         """
-        database_exists = "1" in local(
+        database_exists = "0" not in local(
             "sudo -u postgres psql -l | grep '{}' | wc -l".format(env.db_name),
             capture=True
         )
