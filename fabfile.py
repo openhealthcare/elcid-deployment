@@ -31,11 +31,10 @@ def server_setup():
     setup_fab_env()
     Django.create_local_settings()
     Django.create_gunicorn_settings()
-    database_backup()
+    "database_backup()"
     Django.migrate()
     Django.load_lookup_lists()
     Django.collect_static()
-    load_ipfjes_data()
     setup_server.start_supervisord_or_restart_app()
     setup_server.restart_nginx()
     setup_cron()
@@ -65,11 +64,3 @@ def create_database():
 def database_backup():
     setup_fab_env()
     file_dump = Postgres.dump_data()
-    file_dump_enc = "{}.enc".format(file_dump)
-    command = "openssl smime -encrypt -aes256 -binary -in {1} \
--out {2} -outform DER {0}"
-    command = command.format(
-        env.pem_key, file_dump, file_dump_enc
-    )
-    local(command)
-    local("mv {0} {1}".format(file_dump_enc, env.out_file))
