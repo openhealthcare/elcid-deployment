@@ -32,7 +32,7 @@ class Postgres(object):
 
         if not user_exists:
             cls.database_cmd("CREATE USER {}".format(env.app_owner))
-            cls.database_cmd("ALTER USER {0} WITH PASSWORD {1}".format(
+            cls.database_cmd("ALTER USER {0} WITH PASSWORD '{1}'".format(
                 env.app_owner, env.app_password
             ))
 
