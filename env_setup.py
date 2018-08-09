@@ -46,7 +46,7 @@ def setup_fab_env():
     env.virtual_env_path = "/home/{0}/.virtualenvs/{1}".format(
         env.nix_user, env.release_name
     )
-    env.pg_version = (9, 5)
+    env.pg_version = (10,)
     db_dump_dir = get('db', 'db_dump_dir')
     if db_dump_dir:
         env.db_dump_dir = os.path.join(env.home_dir, db_dump_dir)
