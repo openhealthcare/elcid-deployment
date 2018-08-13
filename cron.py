@@ -19,10 +19,6 @@ class Cron(object):
         comment = cls.get_comment()
         crontab = CronTab(user=True)
         crontab.remove_all(comment=comment)
-        if not lexists(fabric_virtual_env):
-            err = "Unable to find our virtual env for the contab {}"
-            err.format(fabric_virtual_env)
-            raise Exception(err)
         command = "{} database_backup".format(fabric_virtual_env)
         job = crontab.new(command=command, comment=comment)
 
