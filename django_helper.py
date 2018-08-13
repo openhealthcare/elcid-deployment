@@ -80,14 +80,20 @@ class Django(object):
     def create_gunicorn_settings(cls):
         cls.write_conf(
             "gunicorn",
-            dict(env_name=env.virtual_env_path)
+            dict(
+                env_name=env.virtual_env_path,
+                log_dir=env.log_dir
+            )
         )
 
     @classmethod
     def create_celery_settings(cls):
         cls.write_conf(
             "celery",
-            dict(env_name=env.virtual_env_path)
+            dict(
+                env_name=env.virtual_env_path,
+                log_dir=env.log_dir
+            )
         )
 
     @classmethod
