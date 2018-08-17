@@ -35,6 +35,7 @@ def server_setup():
     Django.migrate()
     Django.load_lookup_lists()
     Django.collect_static()
+    Django.create_singletons()
     setup_server.start_supervisord_or_restart_app()
     setup_server.restart_nginx()
     setup_cron()

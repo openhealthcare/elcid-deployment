@@ -37,6 +37,12 @@ class Django(object):
         )
 
     @classmethod
+    def create_singletons(cls):
+        run_management_command(
+            "create_singletons"
+        )
+
+    @classmethod
     def create_local_settings(cls):
         env_values = {
             "db_name": env.db_name,
