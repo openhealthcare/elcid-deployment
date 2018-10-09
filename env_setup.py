@@ -9,7 +9,9 @@ from fabric.api import env
 from deployment import get_release_name
 
 config = ConfigParser.RawConfigParser()
-config.read(os.environ.get('ELCID_ENV', 'settings.ini'))
+BASE_DIR = os.path.realpath(os.path.dirname(__file__))
+DEFAULT_CONFIG_LOCATION = os.path.join(BASE_DIR, 'settings.ini')
+config.read(os.environ.get('ELCID_ENV', DEFAULT_CONFIG_LOCATION))
 
 
 def get(section, option, default=None):
