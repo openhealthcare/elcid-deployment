@@ -29,7 +29,7 @@ Set env.db_dump_dir to load in a database dump
 4. fab restart_everything
 
 
-# Deployement to Production
+# Deployment to Production
 Deployment to production sets up a dump directory. It assumes this is the same
 directory on a different server. It will load in the most recent database
 dump.
